@@ -6,9 +6,11 @@ import { FormControl, FormField, FormLabel, FormMessage } from "./form";
 import { authFormSchema } from "@/lib/utils";
 import { z } from "zod";
 
+const formShema = authFormSchema('sign-up')
+
 interface CustomInput{
-    control: Control<z.infer<typeof authFormSchema>>,
-    name: FieldPath<z.infer<typeof authFormSchema>>;
+    control: Control<z.infer<typeof formShema>>,
+    name: FieldPath<z.infer<typeof formShema>>;
     label: string;
     placeholder?: string;
 }
