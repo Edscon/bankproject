@@ -1,6 +1,6 @@
-import HeaderBox from "@/components/ui/HeaderBox";
-import RightSidebar from "@/components/ui/RightSidebar";
-import TotalBalanceBox from "@/components/ui/TotalBalanceBox";
+import HeaderBox from "@/components/HeaderBox";
+import RightSidebar from "@/components/RightSidebar";
+import TotalBalanceBox from "@/components/TotalBalanceBox";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import React from "react";
 

@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/input";
 import React from 'react';
 import { Control, FieldPath } from "react-hook-form";
 import { FormControl, FormField, FormLabel, FormMessage } from "./form";
