@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/button";
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -17,13 +17,14 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/form";
-import { Input } from "@/components/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { signIn, signUp } from "@/lib/actions/user.actions";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CustomInput from "./CustomInput";
+import PlaidLink from "./PlaidLink";
 
 const AuthForm = ({type}:{type: string}) => {
   const router = useRouter();
@@ -99,11 +100,14 @@ const AuthForm = ({type}:{type: string}) => {
             </p>
         </div>
         </header>
-        {user ? (
+        {/* {user ? ( */}
             <div className="flex flex-col gap-4">
-                {/* PlaidLink */}
+                <PlaidLink 
+                    user={user}
+                    variant="primary"
+                />
             </div>
-        ) : (
+        {/* ) : ( */}
             <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -162,7 +166,7 @@ const AuthForm = ({type}:{type: string}) => {
             </>
 
             
-        )}
+        {/* )} */}
     </section>
   )
 }

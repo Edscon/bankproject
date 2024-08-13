@@ -1,7 +1,7 @@
-import { Input } from "@/components/input";
+import { Input } from "@/components/ui/input";
 import React from 'react';
 import { Control, FieldPath } from "react-hook-form";
-import { FormControl, FormField, FormLabel, FormMessage } from "./form";
+import { FormControl, FormField, FormLabel, FormMessage } from "./ui/form";
 
 import { authFormSchema } from "@/lib/utils";
 import { z } from "zod";

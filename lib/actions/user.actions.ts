@@ -1,7 +1,9 @@
 'use server';
 
+import { plaidClient } from "@/lib/plaid";
 import { cookies } from "next/headers";
 import { ID } from "node-appwrite";
+import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { parseStringify } from "../utils";
 
@@ -73,3 +75,61 @@ export const logoutAccount = async () => {
     }
 }
   
+export const createlinkToken = async (user:User) => {
+    try{
+        const tokenParams = {
+            user:{
+                client_user_id: user.$id
+            },
+            client_name: user.name,
+            products: ['auth'] as Products[],
+            language: 'en',
+            country_codes: ['US'] as CountryCode[]
+        }
+
+        const response = await plaidClient.linkTokenCreate(tokenParams);
+
+        return parseStringify({ linkToken: response.data.link_token })
+    }catch (error){
+        console.log(error)
+    }
+}
+
+export const exchangePublicToken = async ({
+    publicToken,
+    user,
+}:exchangePublicTokenProps) => {
+    try{
+
+        //Exchange public token for access token and item ID
+        const response = await plaidClient.itemPublicTokenExchange({
+            public_token: publicToken,
+        });
+
+        const accessToken = response.data.access_token;
+        const itemId = response.data.item_id
+
+        //Get account information from Plaid using the access token
+        const accountsResponse = await plaidClient.accountsGet({
+            access_token: accessToken,
+        })
+
+        const accountData = accountsResponse.data.accounts[0]
+
+        //Create a processor token for Dwolla using the access token and account ID
+        const request: ProcessorTokenCreateRequest = {
+            access_token: accessToken,
+            account_id: accountData.account_id,
+            processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
+        };
+
+        const ProcessorTokenResponse = await plaidClient.processorTokenCreate(request);
+        const processorToken = ProcessorTokenResponse.data.processor_token;
+
+        //Create a funding source URL for the account using the Dwolla customer ID, processor token, and bank name
+
+
+    }catch (error){
+        console.log(error)
+    }
+}
