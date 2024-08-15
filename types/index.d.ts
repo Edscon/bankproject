@@ -79,7 +79,7 @@ declare type Transaction = {
   $createdAt: string;
   channel: string;
   senderBankId: string;
-  receiverBankId: string;
+  reciverBankId: string;
 };
 
 declare type Bank = {
@@ -285,8 +285,8 @@ declare interface CreateTransactionProps {
   amount: string;
   senderId: string;
   senderBankId: string;
-  receiverId: string;
-  receiverBankId: string;
+  reciverId: string;
+  reciverBankId: string;
   email: string;
 }
 

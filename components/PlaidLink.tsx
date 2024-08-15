@@ -1,5 +1,5 @@
 import { createlinkToken, exchangePublicToken } from "@/lib/actions/user.actions";
-import { StyledString } from "next/dist/build/swc";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from 'react';
 import { PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink } from 'react-plaid-link';
@@ -48,12 +48,25 @@ const PlaidLink = ({ user, variant }:PlaidLinkProps) => {
             Connect Bank
         </Button>
     ): variant === 'ghost' ? (
-        <Button onClick={() => open()}>
-            Connect Bank
+        <Button variant="ghost" className="plaidlink-ghost" onClick={() => open()}>
+            <Image 
+              src='/icons/connect-bank.svg'
+              alt='connect bank'
+              width={24}
+              height={24}
+            />
+            <p className="hidden text-[16px] font-semibold text-black-2 xl:block">Connect Bank</p>
         </Button>
     ): (
-        <Button onClick={() => open()}>
-            Connect Bank
+        <Button className="plaidlink-default" onClick={() => open()}>
+            <Image 
+              src='/icons/connect-bank.svg'
+              alt='connect bank'
+              width={24}
+              height={24}
+            />
+            <p className="text-[16px] font-semibold text-black-2">Connect Bank</p>
+            
         </Button>
     )}
     </>
