@@ -10,16 +10,28 @@ import {
 } from "plaid";
 
 
+import NodeCache from 'node-cache';
 import { parseStringify } from "../utils";
-
 
 import { plaidClient } from "../plaid";
 import { getTransactionsByBankId } from "./transaction.actions";
 import { getBank, getBanks } from "./user.actions";
 
 // Get multiple bank accounts
+
+const cache = new NodeCache();
+
 export const getAccounts = async ({ userId }: getAccountsProps) => {
   try {
+
+    const cacheKey = `accounts_${userId}`;
+    const cachedData = cache.get(cacheKey);
+
+    if (cachedData) {
+      console.log('cachedDataAcounts')
+      return cachedData;
+    }
+
     // get banks from db
     const banks = await getBanks({ userId });
 
@@ -59,7 +71,9 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
       return total + account.currentBalance;
     }, 0);
 
+    cache.set(cacheKey, { data: accounts, totalBanks, totalCurrentBalance }, 1000 * 60 * 10);
     return parseStringify({ data: accounts, totalBanks, totalCurrentBalance });
+
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }
@@ -68,6 +82,13 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
 // Get one bank account
 export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
   try {
+    const cacheKey = `account_${appwriteItemId}`;
+    const cachedData = cache.get(cacheKey);
+
+    if (cachedData) {
+      console.log('cachedDataAcount')
+      return cachedData;
+    }
     // get bank from db
     const bank = await getBank({ documentId: appwriteItemId });
 
@@ -123,7 +144,7 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     ].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
-
+    cache.set(cacheKey, { data: account, transactions: allTransactions, }, 1000 * 60 * 10);
     return parseStringify({
       data: account,
       transactions: allTransactions,
@@ -140,9 +161,8 @@ export const getInstitution = async ({
   try {
     const institutionResponse = await plaidClient.institutionsGetById({
       institution_id: institutionId,
-      country_codes: ["US"] as CountryCode[],
+      country_codes: ["ES"] as CountryCode[],
     });
-
     const intitution = institutionResponse.data.institution;
 
     return parseStringify(intitution);

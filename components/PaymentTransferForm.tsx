@@ -16,13 +16,13 @@ import { createTransaction } from "@/lib/actions/transaction.actions";
 import { BankDropdown } from "./BankDropdown";
 import { Button } from "./ui/button";
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -91,7 +91,6 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
       console.error("Submitting create transfer request failed: ", error);
     }
 
-    setIsLoading(false);
   };
 
   return (

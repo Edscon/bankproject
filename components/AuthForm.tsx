@@ -72,12 +72,13 @@ const AuthForm = ({type}:{type: string}) => {
                 email: data.email, 
                 password: data.password,
             });
-            
+            console.log('Send to home')
             if (response) router.push('/')
         }
     }catch (error){
         console.log(error)
     }finally {
+        console.log('Stop load')
         setIsLoading(false);
     }
 

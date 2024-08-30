@@ -4,6 +4,7 @@ import { plaidClient } from "@/lib/plaid";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { ID, Query } from "node-appwrite";
+import NodeCache from 'node-cache';
 import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
@@ -138,8 +139,8 @@ export const createlinkToken = async (user:User) => {
             },
             client_name: `${user.firstName} ${user.lastName}`,
             products: ['auth'] as Products[],
-            language: 'en',
-            country_codes: ['US'] as CountryCode[]
+            language: 'es',
+            country_codes: ['ES'] as CountryCode[]
         }
 
         const response = await plaidClient.linkTokenCreate(tokenParams);

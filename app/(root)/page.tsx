@@ -9,12 +9,12 @@ import React from "react";
 const Home = async ({ searchParams: { id, page } }:SearchParamProps) => {
     const currentPage = Number(page as string) || 1
     const loggedIn = await getLoggedInUser();
+    if(!loggedIn?.$id) return;
+
     const accounts = await getAccounts({ 
-        userId: loggedIn!.$id
+        userId: loggedIn?.$id
     })
-
     if(!accounts) return;
-
     const accountsData = accounts?.data
     const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
 
@@ -46,11 +46,11 @@ const Home = async ({ searchParams: { id, page } }:SearchParamProps) => {
                 />
             </div>
 
-                <RightSidebar 
+                {/* <RightSidebar 
                     user={loggedIn}
                     transactions={account?.transactions}
                     banks={accountsData?.slice(0,2)}
-                />
+                /> */}
         </section>
     )
 }
