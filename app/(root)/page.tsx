@@ -1,5 +1,6 @@
 import HeaderBox from "@/components/HeaderBox";
 import RecentTransactions from "@/components/RecentTransactions";
+import ReloadButton from "@/components/ReloadButton";
 import RightSidebar from "@/components/RightSidebar";
 import TotalBalanceBox from "@/components/TotalBalanceBox";
 import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
@@ -24,12 +25,19 @@ const Home = async ({ searchParams: { id, page } }:SearchParamProps) => {
         <section className="home">
             <div className="home-content">
                 <header className="home-header">
-                    <HeaderBox 
-                        type="greeting"
-                        title= "Welcome"
-                        user= {`${loggedIn?.firstName} ${loggedIn?.lastName}` || "Gest"}
-                        subtext="Access and manage your account and transactions efficiently."
-                    />
+                    <div className="flex space-x-7">
+                        <HeaderBox 
+                            type="greeting"
+                            title= "Welcome"
+                            user= {`${loggedIn?.firstName} ${loggedIn?.lastName}` || "Gest"}
+                            subtext="Access and manage your account and transactions efficiently."
+                        />
+
+                        <ReloadButton 
+                            userId={loggedIn?.$id }
+                            appwriteItemId={appwriteItemId}
+                            />
+                    </div>
 
                     <TotalBalanceBox 
                         accounts = {accountsData}
@@ -46,11 +54,11 @@ const Home = async ({ searchParams: { id, page } }:SearchParamProps) => {
                 />
             </div>
 
-                {/* <RightSidebar 
+                <RightSidebar 
                     user={loggedIn}
                     transactions={account?.transactions}
                     banks={accountsData?.slice(0,2)}
-                /> */}
+                />
         </section>
     )
 }

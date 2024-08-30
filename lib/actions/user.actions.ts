@@ -112,7 +112,7 @@ export async function getLoggedInUser() {
     try {
       const { account } = await createSessionClient();
       const result = await account.get();
-
+      
       const user = await getUserInfo({ userId: result.$id })
 
       return parseStringify(user)
@@ -140,7 +140,7 @@ export const createlinkToken = async (user:User) => {
             client_name: `${user.firstName} ${user.lastName}`,
             products: ['auth'] as Products[],
             language: 'es',
-            country_codes: ['ES'] as CountryCode[]
+            country_codes: ['US'] as CountryCode[]
         }
 
         const response = await plaidClient.linkTokenCreate(tokenParams);

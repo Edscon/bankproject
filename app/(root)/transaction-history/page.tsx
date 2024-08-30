@@ -1,5 +1,6 @@
 import HeaderBox from '@/components/HeaderBox';
 import { Pagination } from '@/components/Pagination';
+import ReloadButton from "@/components/ReloadButton";
 import TransactionsTable from '@/components/TransactionsTable';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
@@ -37,6 +38,10 @@ const currentTransactions = account?.transactions.slice(
           title="Transaction History"
           subtext="See your bank details and transactions."
         />
+        <ReloadButton 
+                            userId={loggedIn?.$id }
+                            appwriteItemId={appwriteItemId}
+                            />
       </div>
 
       <div className="space-y-6">

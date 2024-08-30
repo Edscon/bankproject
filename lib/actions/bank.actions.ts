@@ -21,6 +21,12 @@ import { getBank, getBanks } from "./user.actions";
 
 const cache = new NodeCache();
 
+export const ReloadBankingCookies = async({userId, appwriteItemId}:{userId:string, appwriteItemId:string}) => {
+  cache.del(`accounts_${userId}`)
+  cache.del(`accounts_${appwriteItemId}`)
+  return 1
+}
+
 export const getAccounts = async ({ userId }: getAccountsProps) => {
   try {
 

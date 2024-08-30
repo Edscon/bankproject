@@ -34,8 +34,9 @@ export const createFundingSource = async (
         plaidToken: options.plaidToken,
       })
       .then((res) => res.headers.get("location"));
-  } catch (err) {
-    console.error("Creating a Funding Source Failed: ", err);
+  } catch (error) {
+    // Handle other errors
+    console.error('Error creating funding source:', error);
   }
 };
 
