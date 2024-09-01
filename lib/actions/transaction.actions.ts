@@ -34,25 +34,27 @@ export const getTransactionsByBankId = async ({bankId}: getTransactionsByBankIdP
   try {
     const { database } = await createAdminClient();
 
-    const senderTransactions = await database.listDocuments(
-      DATABASE_ID!,
-      TRANSACTION_COLLECTION_ID!,
-      [Query.equal('senderBankId', bankId)],
-    )
-
-    const receiverTransactions = await database.listDocuments(
-      DATABASE_ID!,
-      TRANSACTION_COLLECTION_ID!,
-      [Query.equal('reciverBankId', bankId)],
-    );
+    
+    const [senderTransactions, receiverTransactions] = await Promise.all([
+      database.listDocuments(
+        DATABASE_ID!,
+        TRANSACTION_COLLECTION_ID!,
+        [Query.equal('senderBankId', bankId)]
+      ),
+      database.listDocuments(
+        DATABASE_ID!,
+        TRANSACTION_COLLECTION_ID!,
+        [Query.equal('reciverBankId', bankId)]
+      ),
+    ]);
 
     const transactions = {
-      total: senderTransactions.total + receiverTransactions.total,
+      total: (senderTransactions.total || 0) + (receiverTransactions.total || 0),
       documents: [
-        ...senderTransactions.documents, 
-        ...receiverTransactions.documents,
+        ...(senderTransactions.documents || []), 
+        ...(receiverTransactions.documents || []),
       ]
-    }
+    };
 
     return parseStringify(transactions);
   } catch (error) {

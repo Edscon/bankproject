@@ -104,10 +104,16 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     });
     const accountData = accountsResponse.data.accounts[0];
 
-    // get transfer transactions from appwrite
-    const transferTransactionsData = await getTransactionsByBankId({
-      bankId: bank.$id,
-    });
+    const [transferTransactionsData, institution, transactions] = await Promise.all([
+      // Obtener transacciones de transferencia desde Appwrite
+      getTransactionsByBankId({ bankId: bank.$id }),
+
+      // Obtener información de la institución desde Plaid
+      getInstitution({ institutionId: accountsResponse.data.item.institution_id! }),
+
+      // Obtener transacciones desde Plaid
+      getTransactions({ accessToken: bank.accessToken }),
+    ]);
 
     const transferTransactions = transferTransactionsData.documents.map(
       (transferData: Transaction) => ({
@@ -120,15 +126,6 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
         type: transferData.senderBankId === bank.$id ? "debit" : "credit",
       })
     );
-
-    // get institution info from plaid
-    const institution = await getInstitution({
-      institutionId: accountsResponse.data.item.institution_id!,
-    });
-
-    const transactions = await getTransactions({
-      accessToken: bank?.accessToken,
-    });
 
     const account = {
       id: accountData.account_id,
@@ -150,6 +147,7 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     ].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
+
     cache.set(cacheKey, { data: account, transactions: allTransactions, }, 1000 * 60 * 10);
     return parseStringify({
       data: account,
