@@ -184,12 +184,16 @@ export const getTransactions = async ({
 
   try {
     // Iterate through each page of new transaction updates for item
+    let cursor = "";
     while (hasMore) {
       const response = await plaidClient.transactionsSync({
         access_token: accessToken,
+        cursor: cursor,
       });
 
       const data = response.data;
+
+      console.log(data)
 
       transactions = response.data.added.map((transaction) => ({
         id: transaction.transaction_id,
@@ -205,6 +209,8 @@ export const getTransactions = async ({
       }));
 
       hasMore = data.has_more;
+      // Update cursor to the next cursor
+      cursor = data.next_cursor;
     }
 
     return parseStringify(transactions);
