@@ -32,7 +32,6 @@ const MobileNav = ({user}: MobileNavProps) => {
                     />
                 </SheetTrigger>
                 <SheetContent side="left" className="border-none bg-white">
-                    
                     <Link href="/" className="cursor-pointer items-center gap-1 flex px-4"> 
                         <Image 
                             src="/icons/logo.svg"
@@ -70,9 +69,9 @@ const MobileNav = ({user}: MobileNavProps) => {
                                         </SheetClose>
                                     )
                                 })}
-                                <PlaidLink user={user}/>
                             </nav>
                         </SheetClose>
+                        <PlaidLink user={user}/>
 
                         <Footer user={user} type="mobile"/>
                     </div>
